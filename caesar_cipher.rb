@@ -1,30 +1,18 @@
-def caesar_cipher(string, shifter)
-  keys = (1..26)
-  values = ('a'..'z')
-  alphabet_map = keys.zip(values).to_h
-  
-  shifted_string = ""
-  
-  string.downcase.each_char do |char|
-    if char =~ /[a-z]/
-      # 1. Find the current number (1-26)
-      current_num = alphabet_map.key(char)
-      
-      # 2. Apply shift with modulo 26
-      # (Subtract 1 to make it 0-indexed for the math, then add 1 back)
-      new_num = ((current_num + shifter - 1) % 26) + 1
-      
-      # 3. Look up the new letter in the map
-      shifted_string += alphabet_map[new_num]
+def caesar_cipher(string, shift)
+  # We use .map to create a new array of transformed characters, then join them
+  string.chars.map do |char|
+    if char.match?(/[a-z]/)
+      # For lowercase: 'a' is 97. We normalize to 0-25, shift, wrap, then return to 97.
+      (((char.ord - 97 + shift) % 26) + 97).chr
+    elsif char.match?(/[A-Z]/)
+      # For uppercase: 'A' is 65.
+      (((char.ord - 65 + shift) % 26) + 65).chr
     else
-      # Keep punctuation/spaces as they are
-      shifted_string += char
+      # If it's a space or !, just return it as is
+      char
     end
-  end
-
-  shifted_string
+  end.join
 end
 
-# --- PART 2: The Action (Call) ---
-# This must be at the BOTTOM
-puts caesar_cipher("What a string!", 1)
+puts caesar_cipher("What a string!", 5)
+# => "Bmfy f xywnsl!"
