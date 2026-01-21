@@ -16,3 +16,6 @@ end
 
 puts caesar_cipher("What a string!", 5)
 # => "Bmfy f xywnsl!"
+puts "hello " + "whats is your name"
+name = gets.chomp
+puts "hello how are you today #{name}"
